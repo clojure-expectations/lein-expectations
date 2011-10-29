@@ -4,13 +4,13 @@
 
 (defn matching-ns?
   [to-match]
-  (fn [ns]
-    (if (empty? to-match)
-      ns
-      (->> (for [m to-match
-                 :let [m (re-pattern m)]]
-             (re-matches m (name ns)))
-           (some identity)))))
+  (let [to-match (map re-pattern to-match)]
+    (fn [ns]
+      (if (empty? to-match)
+        ns
+        (->> (for [m to-match]
+               (re-matches m (name ns)))
+             (some identity))))))
 
 (defn expectations
   "Executes expectation tests in your project.
