@@ -6,23 +6,33 @@ A leiningen plugin to make running tests written using [expectations](https://gi
 
 In your project.clj:
 
-    :dev-dependencies [[lein-expectations "0.0.1"]]
+```clojure
+:dev-dependencies [[lein-expectations "0.0.1"]]
+```
 
 or install as a plugin:
 
-    $ lein plugin install lein-expectations "0.0.1"
+```bash
+$ lein plugin install lein-expectations "0.0.1"
+```
 
 To run all your tests:
 
-    $ lein expectations
+```bash
+$ lein expectations
+```
 
 To run specific test namespaces:
 
-    $ lein expectations my.test.namespace1 my.test.namespace2
+```bash
+$ lein expectations my.test.namespace1 my.test.namespace2
+```
 
 To run test namespaces by regex:
 
-    $ lein expectations my.tests.foo.* my.tests.bar.*
+```bash
+$ lein expectations my.tests.foo.* my.tests.bar.*
+```
 
 ## License
 
