@@ -7,13 +7,13 @@ A leiningen plugin to make running tests written using [expectations](https://gi
 In your project.clj:
 
 ```clojure
-:dev-dependencies [[lein-expectations "0.0.1"]]
+:dev-dependencies [[lein-expectations "0.0.2"]]
 ```
 
 or install as a plugin:
 
 ```bash
-$ lein plugin install lein-expectations "0.0.1"
+$ lein plugin install lein-expectations "0.0.2"
 ```
 
 To run all your tests:
