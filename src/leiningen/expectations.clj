@@ -32,7 +32,8 @@
           (with-open [w# (-> (java.io.File. ~path)
                              (java.io.FileOutputStream.)
                              (java.io.OutputStreamWriter.))]
-            (.write w# (pr-str summary#)))))
+            (.write w# (pr-str summary#))))
+        (shutdown-agents))
      nil
      nil
      '(require ['expectations]))
