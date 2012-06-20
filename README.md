@@ -39,3 +39,7 @@ $ lein expectations my.tests.foo.* my.tests.bar.*
 Copyright (C) 2012 Gareth Jones
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+## Contributors
+
+Lee Hinman
