@@ -1,7 +1,30 @@
 (ns leiningen.expectations
-  (:use [leiningen.compile :only [eval-in-project]]
-        [leiningen.util.ns :only [namespaces-in-dir]])
   (:import (java.io File)))
+
+(defn eval-in-project
+  "Support eval-in-project in both Leiningen 1.x and 2.x."
+  [project form init]
+  (let [[eip two?] (or (try (require 'leiningen.core.eval)
+                            [(resolve 'leiningen.core.eval/eval-in-project)
+                             true]
+                            (catch java.io.FileNotFoundException _))
+                       (try (require 'leiningen.compile)
+                            [(resolve 'leiningen.compile/eval-in-project)]
+                            (catch java.io.FileNotFoundException _)))]
+    (if two?
+      (eip project form init)
+      (eip project form nil nil init))))
+
+(defn namespaces-in-dir
+  "Support namespaces-in-dir in both Leiningen 1.x and 2.x."
+  [dir]
+  (let [nid (or (try (require 'leiningen.util.ns)
+                            (resolve 'leiningen.util.ns/namespaces-in-dir)
+                            (catch java.io.FileNotFoundException _))
+                       (try (require 'bultitude.core)
+                            (resolve 'bultitude.core/namespaces-in-dir)
+                            (catch java.io.FileNotFoundException _)))]
+    (nid dir)))
 
 (defn matching-ns?
   [to-match]
@@ -18,7 +41,10 @@
    By default all test namespaces will be run, or you can specify
    which namespaces to run using regex syntax to filter."
   [project & args]
-  (let [ns (->> (namespaces-in-dir (:test-path project))
+  (let [paths (if (:test-path project)
+                [(:test-path project)]
+                (:test-paths project))
+        ns (->> (mapcat namespaces-in-dir paths)
                 (filter (matching-ns? args)))
         results (doto (File/createTempFile "lein" "result") .deleteOnExit)
         path (.getAbsolutePath results)]
@@ -34,12 +60,9 @@
                              (java.io.OutputStreamWriter.))]
             (.write w# (pr-str summary#))))
         (shutdown-agents))
-     nil
-     nil
      '(require ['expectations]))
     (if (and (.exists results) (pos? (.length results)))
       (let [summary (read-string (slurp path))
             success? (zero? (+ (:fail summary) (:error summary)))]
         (if success? 0 1))
       1)))
-
