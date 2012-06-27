@@ -4,16 +4,26 @@ A leiningen plugin to make running tests written using [expectations](https://gi
 
 ## Usage
 
-In your project.clj:
+For Leiningen 2.0:
+
+Declare `lein-expectations` in `project.clj` or your `:user` profile in `~/.lein/profiles.clj`:
 
 ```clojure
-:dev-dependencies [[lein-expectations "0.0.3"]]
+:plugins [[lein-expectations "0.0.5"]]
+```
+
+For Leiningen 1.x:
+
+Declare `lein-expectations` in `project.clj`:
+
+```clojure
+:dev-dependencies [[lein-expectations "0.0.5"]]
 ```
 
 or install as a plugin:
 
 ```bash
-$ lein plugin install lein-expectations "0.0.3"
+$ lein plugin install lein-expectations "0.0.5"
 ```
 
 To run all your tests:
