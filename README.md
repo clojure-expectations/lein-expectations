@@ -6,7 +6,7 @@ A leiningen plugin to make running tests written using [expectations](https://gi
 
 For Leiningen 2.0:
 
-Declare `lein-expectations` in `project.clj` or your `:user` profile in `~/.lein/profiles.clj`:
+Declare `lein-expectations` in `project.clj`:
 
 ```clojure
 :plugins [[lein-expectations "0.0.5"]]
