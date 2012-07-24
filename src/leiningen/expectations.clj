@@ -1,5 +1,8 @@
 (ns leiningen.expectations
-  (:import (java.io File)))
+  (:import (java.io File))
+  (:require [leiningen.core.main]))
+
+(def ^:dynamic *exit-after-tests* true)
 
 (defn eval-in-project
   "Support eval-in-project in both Leiningen 1.x and 2.x."
@@ -64,5 +67,9 @@
     (if (and (.exists results) (pos? (.length results)))
       (let [summary (read-string (slurp path))
             success? (zero? (+ (:fail summary) (:error summary)))]
+        (if (and
+             (not (= :leiningen (:eval-in project)))
+             *exit-after-tests*)
+          (leiningen.core.main/exit (+ (:fail summary) (:error summary))))
         (if success? 0 1))
       1)))
