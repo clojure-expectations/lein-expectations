@@ -65,11 +65,7 @@
         (shutdown-agents))
      '(require ['expectations]))
     (if (and (.exists results) (pos? (.length results)))
-      (let [summary (read-string (slurp path))
-            success? (zero? (+ (:fail summary) (:error summary)))]
-        (if (and
-             (not (= :leiningen (:eval-in project)))
-             *exit-after-tests*)
-          (leiningen.core.main/exit (+ (:fail summary) (:error summary))))
-        (if success? 0 1))
-      1)))
+      (when-not (let [summary (read-string (slurp path))]
+                  (zero? (+ (:fail summary) (:error summary))))
+        (leiningen.core.main/abort))
+      (leiningen.core.main/abort "Unable to read results."))))

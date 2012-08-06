@@ -9,10 +9,10 @@ For Leiningen 2.0:
 Declare `lein-expectations` in `project.clj`:
 
 ```clojure
-:plugins [[lein-expectations "0.0.5"]]
+:plugins [[lein-expectations "0.0.7"]]
 ```
 
-For Leiningen 1.x:
+For Leiningen 1.x - use lein-expectations 0.0.5 or earlier:
 
 Declare `lein-expectations` in `project.clj`:
 
@@ -52,4 +52,4 @@ Distributed under the Eclipse Public License, the same as Clojure.
 
 ## Contributors
 
-Lee Hinman
+Sean Corfield, Lee Hinman
