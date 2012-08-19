@@ -39,6 +39,13 @@
                (re-matches m (name ns)))
              (some identity))))))
 
+(defn print-finished-ns [a-ns-name]
+  (println "\n" a-ns-name "complete"))
+
+(defn print-finished-expectation [_]
+  (print ".")
+  (flush))
+
 (defn expectations
   "Executes expectation tests in your project.
    By default all test namespaces will be run, or you can specify
@@ -50,18 +57,26 @@
         ns (->> (mapcat namespaces-in-dir paths)
                 (filter (matching-ns? args)))
         results (doto (File/createTempFile "lein" "result") .deleteOnExit)
-        path (.getAbsolutePath results)]
+        path (.getAbsolutePath results)
+        show-finished-ns (:expectations/show-finished-ns project)
+        show-finished-expectation (:expectations/show-finished-expectation project)]
     (eval-in-project
      project
      `(do
         (expectations/disable-run-on-shutdown)
         (doseq [n# '~ns]
           (require n# :reload))
-        (let [summary# (expectations/run-all-tests)]
-          (with-open [w# (-> (java.io.File. ~path)
-                             (java.io.FileOutputStream.)
-                             (java.io.OutputStreamWriter.))]
-            (.write w# (pr-str summary#))))
+        (binding [expectations/ns-finished ~(if show-finished-ns
+                                              'leiningen.expectations/print-finished-ns
+                                              'expectations/ns-finished)
+                  expectations/expectation-finished ~(if show-finished-expectation
+                                                       'leiningen.expectations/print-finished-expectation
+                                                       'expectations/expectation-finished)]
+          (let [summary# (expectations/run-all-tests)]
+            (with-open [w# (-> (java.io.File. ~path)
+                               (java.io.FileOutputStream.)
+                               (java.io.OutputStreamWriter.))]
+              (.write w# (pr-str summary#)))))
         (shutdown-agents))
      '(require ['expectations]))
     (if (and (.exists results) (pos? (.length results)))
