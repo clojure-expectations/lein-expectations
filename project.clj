@@ -1,4 +1,4 @@
-(defproject lein-expectations "0.0.8-SNAPSHOT"
+(defproject lein-expectations "0.0.9-SNAPSHOT"
   :description "Leiningen plugin to run tests written using the expectations library."
   :url "https://github.com/gar3thjon3s/lein-expectations"
   :dependencies [[expectations/expectations "1.4.5"]]
