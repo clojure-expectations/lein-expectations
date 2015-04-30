@@ -9,7 +9,7 @@ For Leiningen 2.0:
 Declare `lein-expectations` in `project.clj`:
 
 ```clojure
-:plugins [[lein-expectations "0.0.7"]]
+:plugins [[lein-expectations "0.0.8"]]
 ```
 
 For Leiningen 1.x - use lein-expectations 0.0.5 or earlier:
